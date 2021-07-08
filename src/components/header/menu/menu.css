@@ -1,0 +1,13 @@
+.menu-list{
+    display: flex;
+    list-style: none;
+}
+
+.menu-item{
+    font-size: 32px;
+    margin-right: 2rem;
+}
+
+.menu-item:last-child{
+    margin-right: 0;
+}
