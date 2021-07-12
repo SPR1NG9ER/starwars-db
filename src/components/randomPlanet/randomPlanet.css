@@ -6,6 +6,7 @@
     border: 1px solid #555;
     min-height: 100px;
     position: relative;
+    align-items: center;
 }
 
 .person-details-img{
@@ -39,6 +40,7 @@
 
 .person-details-key{
     margin-right: .5em;
+    text-transform: capitalize;
 }
 
 .person-details-key:after{

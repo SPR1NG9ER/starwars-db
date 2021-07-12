@@ -7,3 +7,10 @@ body {
 .container{
     max-width: 980px;
 }
+
+.item-list{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 20px 0;
+}

@@ -1,15 +1,19 @@
 .items-list{
     background: #3a3a3a;
     border-radius: 15px;
-    margin: 20px 0;
     border: 1px solid #555;
 }
 
 .items-list-item{
-    padding: 10px 0;
+    padding: 15px 0;
     border-bottom: 1px solid #555;
-    margin: .5rem 0;
     font-size: 20px;
+    transition: all .2s cubic-bezier(.22,.61,.36,1);
+}
+
+.items-list-item:hover{
+    background: #424242;
+    cursor: pointer;
 }
 
 .items-list-item:last-child{

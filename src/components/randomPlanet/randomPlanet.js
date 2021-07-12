@@ -14,11 +14,6 @@ class RandomPlanet extends Component {
         error: false
     }
 
-    constructor() {
-        super();
-        this.updatePlanet();
-    }
-
     onError = () => {
         this.setState({error: true, loading: false});
     }
@@ -27,8 +22,17 @@ class RandomPlanet extends Component {
         this.setState({planet, loading: false})
     }
 
-    updatePlanet() {
-        const id = Math.floor((Math.random() * 25)) + 3
+    componentDidMount() {
+        this.updatePlanet();
+        this.updateInterval = setInterval(this.updatePlanet, 3000)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.updateInterval)
+    }
+
+    updatePlanet = () => {
+        const id = Math.floor((Math.random() * 25)) + 3;
         this.swapiService.getPlanet(id)
             .then(this.onPlanetLoad)
             .catch(this.onError)
@@ -68,15 +72,15 @@ const PlanetContent = ({planet}) => {
                 <h3 className="person-details-title">{name}</h3>
                 <div className="person-details-list">
                     <div className="person-details-item">
-                        <span className="person-details-key">Население</span>
+                        <span className="person-details-key">Population</span>
                         <span className="person-details-value">{population}</span>
                     </div>
                     <div className="person-details-item">
-                        <span className="person-details-key">Время оборота</span>
+                        <span className="person-details-key">Rotation Period</span>
                         <span className="person-details-value">{rotationPeriod}</span>
                     </div>
                     <div className="person-details-item">
-                        <span className="person-details-key">Диаметер</span>
+                        <span className="person-details-key">Diameter</span>
                         <span className="person-details-value">{diameter}</span>
                     </div>
                 </div>
