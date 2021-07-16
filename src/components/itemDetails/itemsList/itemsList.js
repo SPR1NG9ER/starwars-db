@@ -1,22 +1,26 @@
 import "./itemList.css"
 import {Component} from "react";
-import SwapiService from "../../services/swapi-service";
-import Preloader from "../preloader";
+import SwapiService from "../../../services/swapi-service";
+import Preloader from "../../preloader";
 
 export default class ItemsList extends Component {
     swapiService = new SwapiService();
 
     state = {
-        componentList: null
+        componentList: null,
     }
 
+
     componentDidMount() {
-        this.swapiService.getAllPeople()
+        const {getItems} = this.props;
+
+        getItems()
             .then(componentList => this.setState({componentList}))
     }
 
 
     render() {
+
 
         const {componentList} = this.state;
 
@@ -24,10 +28,15 @@ export default class ItemsList extends Component {
             return <Preloader/>
         }
 
-        const items = componentList.map(({name, id}) => {
+        const items = componentList.map((item, i) => {
+            const labels = this.props.renderItem(item)
+
+            if (i > 4) {
+                return false;
+            }
             return (
-                <div className="items-list-item" onClick={() => this.props.onItemSelect(id)} key={id}>
-                    <div className="items-list-name">{name}</div>
+                <div className="items-list-item" onClick={() => this.props.onItemSelect(item.id)} key={item.id}>
+                    <div className="items-list-name">{labels}</div>
                 </div>
             )
         })
@@ -40,5 +49,3 @@ export default class ItemsList extends Component {
         )
     }
 }
-
-window.state = ItemsList.state;
