@@ -3,13 +3,15 @@ import SwapiService from "../../services/swapi-service";
 import {Component} from "react";
 import Preloader from "../preloader";
 import ErrorMessage from "../errorMessage";
+import PlanetContent from "../itemContent/itemsContent/PlanetContent";
+import PropTypes from "prop-types";
 
 class RandomPlanet extends Component {
 
     swapiService = new SwapiService();
 
     state = {
-        planet: {},
+        id: null,
         loading: true,
         error: false
     }
@@ -24,7 +26,7 @@ class RandomPlanet extends Component {
 
     componentDidMount() {
         this.updatePlanet();
-        this.updateInterval = setInterval(this.updatePlanet, 3000)
+        this.updateInterval = setInterval(this.updatePlanet, this.props.timeUpdate)
     }
 
     componentWillUnmount() {
@@ -33,18 +35,19 @@ class RandomPlanet extends Component {
 
     updatePlanet = () => {
         const id = Math.floor((Math.random() * 25)) + 3;
-        this.swapiService.getPlanet(id)
-            .then(this.onPlanetLoad)
-            .catch(this.onError)
+        this.setState({
+            planetId: id,
+            loading: false
+        })
     }
 
     render() {
 
-        const {planet, loading, error} = this.state;
+        const { loading, error} = this.state;
         const errorElement = error ? <ErrorMessage/> : null;
         let content;
         if(!errorElement){
-            content = loading ? <Preloader/> : <PlanetContent planet={planet}/>
+            content = loading ? <Preloader/> : <PlanetContent itemId={this.state.planetId}/>
         }
 
         return (
@@ -57,36 +60,11 @@ class RandomPlanet extends Component {
     }
 }
 
-const PlanetContent = ({planet}) => {
-
-    const {name, population, rotationPeriod, diameter, id} = planet;
-
-
-    return (
-        <>
-            <div className="person-details-img">
-                <img src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`} alt=""/>
-            </div>
-
-            <div className="person-details-info">
-                <h3 className="person-details-title">{name}</h3>
-                <div className="person-details-list">
-                    <div className="person-details-item">
-                        <span className="person-details-key">Population</span>
-                        <span className="person-details-value">{population}</span>
-                    </div>
-                    <div className="person-details-item">
-                        <span className="person-details-key">Rotation Period</span>
-                        <span className="person-details-value">{rotationPeriod}</span>
-                    </div>
-                    <div className="person-details-item">
-                        <span className="person-details-key">Diameter</span>
-                        <span className="person-details-value">{diameter}</span>
-                    </div>
-                </div>
-            </div>
-        </>
-    )
+RandomPlanet.defaultProps = {
+    timeUpdate: 3000
 }
 
+RandomPlanet.propTypes = {
+    timeUpdate: PropTypes.number
+}
 export default RandomPlanet;

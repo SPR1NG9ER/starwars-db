@@ -5,6 +5,7 @@
     border-radius: 15px;
     border: 1px solid #555;
     height: max-content;
+    width: 100%;
 }
 
 .item-details-img{
