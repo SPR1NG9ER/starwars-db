@@ -1,5 +1,6 @@
 export default class SwapiService {
     _baseUrl = "https://swapi.dev/api";
+    _baseImg = "https://starwars-visualguide.com/assets/img";
 
     async getResource(url) {
         const res = await fetch(`${this._baseUrl}${url}`);
@@ -9,6 +10,18 @@ export default class SwapiService {
         }
 
         return await res.json();
+    }
+
+    getPersonImage = (id) => {
+        return `${this._baseImg}/characters/${id}.jpg`
+    }
+
+    getStarshipImage = (id) => {
+        return `${this._baseImg}/starships/${id}.jpg`
+    }
+
+    getPlanetImage = (id) => {
+        return `${this._baseImg}/planets/${id}.jpg`
     }
 
     getPerson = async (id) => {
@@ -31,13 +44,14 @@ export default class SwapiService {
         return res.results.map(this._transformPlanet);
     }
 
-    getStarship = (id) => {
-        return this.getResource(`/starships/${id}/`)
+    getStarship = async (id) => {
+        const starship = await this.getResource(`/starships/${id}/`);
+        return this._transformStarship(starship);
     }
 
     getAllStarships = async () => {
         const res = await this.getResource("/starships/")
-        return res.results;
+        return res.results.map(this._transformStarship);
     }
 
     _extractId (string){
@@ -47,23 +61,32 @@ export default class SwapiService {
 
     _transformPerson = (person) => {
         return{
-            id: this._extractId(person.url),
             name: person.name,
             gender: person.gender,
             birthYear: person.birth_year,
-            eyeColor: person.eye_color
+            eyeColor: person.eye_color,
+            id: this._extractId(person.url)
         }
     }
 
 
     _transformPlanet = (planet) => {
-
         return{
             name: planet.name,
             population: planet.population,
             rotationPeriod: planet.rotation_period,
             diameter: planet.diameter,
             id: this._extractId(planet.url)
+        }
+    }
+
+    _transformStarship = (starship) => {
+        return {
+            name: starship.name,
+            model: starship.model,
+            length: starship.length,
+            cost: starship.cost_in_credits,
+            id: this._extractId(starship.url)
         }
     }
 }
