@@ -51,7 +51,7 @@ class RandomPlanet extends Component {
         }
 
         return (
-            <div className="person-details">
+            <div className="random-planet">
                 {errorElement}
                 {content}
             </div>

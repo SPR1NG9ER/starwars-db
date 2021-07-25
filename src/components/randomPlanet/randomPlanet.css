@@ -1,10 +1,9 @@
-.person-details{
+.random-planet{
     display: flex;
     background: #3a3a3a;
     padding: 20px;
     border-radius: 15px;
     border: 1px solid #555;
-    min-height: 100px;
     position: relative;
     align-items: center;
     min-height: 300px;
